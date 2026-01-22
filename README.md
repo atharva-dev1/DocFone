@@ -1,6 +1,6 @@
 # 🏥 DocFone - The Future of Healthcare
 
-<img width="1919" height="791" alt="image" src="https://github.com/user-attachments/assets/a573bbd4-e6e3-4acf-adae-7b7ca67fc147" />
+<img width="1919" height="931" alt="image" src="https://github.com/user-attachments/assets/e24d63fa-b04e-4a9f-94f5-abac81cb08f8" />
 
 ---
 > A futuristic, diverse, and intelligent medical platform connecting patients with top specialists. Built with a premium **MERN Stack** (MongoDB, Express, React, Node.js) architecture.
