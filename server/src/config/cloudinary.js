@@ -11,7 +11,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-        folder: 'medyxra_prescriptions',
+        folder: 'docfone_prescriptions',
         allowed_formats: ['jpg', 'png', 'jpeg', 'pdf'],
     },
 });

@@ -126,7 +126,7 @@ export const Landing = () => {
             <section className="py-20 px-4 md:px-6 bg-white/30 backdrop-blur-sm">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4">Why Choose Medyxra?</h2>
+                        <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4">Why Choose DocFone?</h2>
                         <p className="text-slate-600 max-w-2xl mx-auto">
                             We combine cutting-edge technology with compassionate care to provide
                             a seamless healthcare experience.

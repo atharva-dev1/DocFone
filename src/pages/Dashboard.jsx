@@ -149,7 +149,7 @@ export const Dashboard = () => {
                     >
                         <div className="relative z-10">
                             <h3 className="text-xl font-bold mb-2">Premium Care</h3>
-                            <p className="text-indigo-100 text-sm mb-4">Upgrade to Medyxra+ for 24/7 unlimited chats with specialists.</p>
+                            <p className="text-indigo-100 text-sm mb-4">Upgrade to DocFone+ for 24/7 unlimited chats with specialists.</p>
                             <Button size="sm" className="bg-white text-indigo-600 hover:bg-indigo-50 border-none">
                                 Upgrade Now
                             </Button>

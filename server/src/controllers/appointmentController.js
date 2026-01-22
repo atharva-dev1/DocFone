@@ -28,7 +28,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
         slot: { startTime, endTime: 'TBD' }, // Logic to calculate end time needed
         type,
         symptoms,
-        meetLink: `https://meet.jit.si/medyxra-${Math.random().toString(36).substring(7)}`
+        meetLink: `https://meet.jit.si/docfone-${Math.random().toString(36).substring(7)}`
     });
 
     res.status(201).json(appointment);

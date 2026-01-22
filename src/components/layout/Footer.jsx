@@ -5,7 +5,7 @@ export const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div className="space-y-4">
                         <h3 className="text-xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
-                            Medyxra
+                            DocFone
                         </h3>
                         <p className="text-slate-500 text-sm">
                             Advanced healthcare management for the next generation.
@@ -40,7 +40,7 @@ export const Footer = () => {
                     </div>
                 </div>
                 <div className="mt-8 pt-8 border-t border-slate-200 text-center text-slate-400 text-sm">
-                    © {new Date().getFullYear()} Medyxra. All rights reserved.
+                    © {new Date().getFullYear()} DocFone. All rights reserved.
                 </div>
             </div>
         </footer>

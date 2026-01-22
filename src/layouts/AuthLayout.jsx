@@ -21,7 +21,7 @@ export const AuthLayout = ({ children, title, subtitle }) => {
                 <div className="text-center mb-8">
                     <Link to="/" className="inline-block group">
                         <span className="text-4xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent group-hover:opacity-80 transition-opacity">
-                            Medyxra
+                            DocFone
                         </span>
                     </Link>
                     <h2 className="text-xl font-semibold text-slate-800 mt-4">{title}</h2>
