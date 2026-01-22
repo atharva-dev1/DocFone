@@ -26,7 +26,7 @@ export const Navbar = () => {
                         <Activity size={24} />
                     </div>
                     <span className="text-xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
-                        Medyxra
+                        DocFone
                     </span>
                 </Link>
 
