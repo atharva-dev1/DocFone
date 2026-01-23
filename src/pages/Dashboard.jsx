@@ -6,9 +6,19 @@ import { SummaryCard } from '../components/dashboard/SummaryCard';
 import { Timeline } from '../components/dashboard/Timeline';
 import { Link } from 'react-router-dom';
 
+import { useAuth } from '../context/AuthContext';
+import { Navigate } from 'react-router-dom';
+
 export const Dashboard = () => {
+    const { user, loading } = useAuth();
     const hour = new Date().getHours();
     const greeting = hour < 12 ? 'Good Morning' : hour < 18 ? 'Good Afternoon' : 'Good Evening';
+
+    if (loading) return <div className="p-10 text-center">Loading...</div>;
+    if (!user) return <Navigate to="/login" />;
+
+    const initials = user.firstName ? `${user.firstName[0]}${user.lastName ? user.lastName[0] : ''}` : 'U';
+    const fullName = user.firstName ? `${user.firstName} ${user.lastName ? user.lastName : ''}` : 'User';
 
     const timelineEvents = [
         {
@@ -43,7 +53,7 @@ export const Dashboard = () => {
                     animate={{ opacity: 1, x: 0 }}
                 >
                     <h1 className="text-3xl font-bold text-slate-900">
-                        {greeting}, <span className="text-primary-600">Alex</span> 👋
+                        {greeting}, <span className="text-primary-600">{user.firstName}</span> 👋
                     </h1>
                     <p className="text-slate-500 mt-1">Here's your health overview for today.</p>
                 </motion.div>
@@ -55,9 +65,9 @@ export const Dashboard = () => {
                     </Button>
                     <div className="flex items-center gap-3 bg-white pl-2 pr-4 py-1.5 rounded-full border border-slate-200 shadow-sm cursor-pointer hover:bg-slate-50 transition-colors">
                         <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-sm">
-                            AL
+                            {initials}
                         </div>
-                        <span className="font-semibold text-sm text-slate-700">Alex L.</span>
+                        <span className="font-semibold text-sm text-slate-700">{fullName}</span>
                         <ChevronRight size={16} className="text-slate-400" />
                     </div>
                 </div>

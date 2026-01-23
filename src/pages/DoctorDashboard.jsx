@@ -54,14 +54,21 @@ const ScheduleItem = ({ time, patient, type }) => (
     </div>
 );
 
+import { useAuth } from '../context/AuthContext';
+import { Navigate } from 'react-router-dom';
+
 export const DoctorDashboard = () => {
+    const { user, loading } = useAuth();
     const [isAvailable, setIsAvailable] = useState(true);
+
+    if (loading) return <div className="p-10 text-center">Loading...</div>;
+    if (!user) return <Navigate to="/login" />;
 
     return (
         <div className="max-w-7xl mx-auto px-4 md:px-6 pb-12">
             <div className="flex flex-col md:flex-row items-end justify-between gap-4 mb-8">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900">Dr. Anjali Desai</h1>
+                    <h1 className="text-3xl font-bold text-slate-900">Dr. {user.firstName} {user.lastName}</h1>
                     <p className="text-slate-500">Cardiologist • MBBS, MD</p>
                 </div>
                 <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200">

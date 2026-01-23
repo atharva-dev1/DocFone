@@ -3,11 +3,14 @@ import { motion } from 'framer-motion';
 import { Activity, User, Calendar, MessageSquare, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../ui/Button';
+import { useAuth } from '../../context/AuthContext';
 
 export const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const location = useLocation();
     const isAuthPage = ['/login', '/register'].includes(location.pathname);
+
+    const { user, logout } = useAuth();
 
     if (isAuthPage) return null;
 
@@ -50,13 +53,29 @@ export const Navbar = () => {
                     ))}
                 </div>
 
+
+
                 <div className="hidden md:flex items-center gap-4">
-                    <Link to="/login">
-                        <Button variant="ghost" size="sm">Sign In</Button>
-                    </Link>
-                    <Link to="/register">
-                        <Button variant="primary" size="sm">Get Started</Button>
-                    </Link>
+                    {user ? (
+                        <>
+                            <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-sm">
+                                    {user.firstName ? user.firstName[0] : 'U'}
+                                </div>
+                                <span className="text-sm font-medium text-slate-700">{user.firstName}</span>
+                            </div>
+                            <Button variant="ghost" size="sm" onClick={logout}>Sign Out</Button>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/login">
+                                <Button variant="ghost" size="sm">Sign In</Button>
+                            </Link>
+                            <Link to="/register">
+                                <Button variant="primary" size="sm">Get Started</Button>
+                            </Link>
+                        </>
+                    )}
                 </div>
 
                 {/* Mobile Menu Toggle */}
@@ -86,12 +105,18 @@ export const Navbar = () => {
                         </Link>
                     ))}
                     <div className="flex flex-col gap-3 mt-2">
-                        <Link to="/login" onClick={() => setIsOpen(false)}>
-                            <Button variant="secondary" className="w-full">Sign In</Button>
-                        </Link>
-                        <Link to="/register" onClick={() => setIsOpen(false)}>
-                            <Button variant="primary" className="w-full">Get Started</Button>
-                        </Link>
+                        {user ? (
+                            <Button variant="secondary" className="w-full" onClick={logout}>Sign Out</Button>
+                        ) : (
+                            <>
+                                <Link to="/login" onClick={() => setIsOpen(false)}>
+                                    <Button variant="secondary" className="w-full">Sign In</Button>
+                                </Link>
+                                <Link to="/register" onClick={() => setIsOpen(false)}>
+                                    <Button variant="primary" className="w-full">Get Started</Button>
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </motion.div>
             )}

@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Layout } from './components/layout/Layout';
 import { ToastProvider } from './context/ToastContext';
+import { AuthProvider } from './context/AuthContext';
 import { AnimatePresence } from 'framer-motion';
 
 // Pages
@@ -27,24 +28,26 @@ const ScrollToTop = () => {
 function App() {
   return (
     <ToastProvider>
-      <Router>
-        <ScrollToTop />
-        <div className="text-slate-900 bg-slate-50 min-h-screen font-sans selection:bg-primary-500/30">
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Landing />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
-              <Route path="/doctors" element={<FindDoctor />} />
-              <Route path="/book-appointment" element={<Booking />} />
-              <Route path="/prescription" element={<Prescription />} />
-              <Route path="/chat" element={<Chat />} />
-            </Routes>
-          </Layout>
-        </div>
-      </Router>
+      <AuthProvider>
+        <Router>
+          <ScrollToTop />
+          <div className="text-slate-900 bg-slate-50 min-h-screen font-sans selection:bg-primary-500/30">
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Landing />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
+                <Route path="/doctors" element={<FindDoctor />} />
+                <Route path="/book-appointment" element={<Booking />} />
+                <Route path="/prescription" element={<Prescription />} />
+                <Route path="/chat" element={<Chat />} />
+              </Routes>
+            </Layout>
+          </div>
+        </Router>
+      </AuthProvider>
     </ToastProvider>
   );
 }

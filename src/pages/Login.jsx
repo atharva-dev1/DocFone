@@ -6,29 +6,29 @@ import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { useToast } from '../context/ToastContext';
+import { useAuth } from '../context/AuthContext';
 
 export const Login = () => {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({ email: '', password: '' });
     const navigate = useNavigate();
-    const { addToast } = useToast();
+    const { login } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
-        // Simulate API call
-        setTimeout(() => {
-            setLoading(false);
-            if (formData.email && formData.password) {
-                // Simple mock validation
-                addToast({ title: 'Welcome back!', message: 'Successfully signed in.', type: 'success' });
-                navigate('/dashboard');
+        const userData = await login(formData.email, formData.password);
+
+        setLoading(false);
+        if (userData) {
+            if (userData.role === 'doctor') {
+                navigate('/doctor-dashboard');
             } else {
-                addToast({ title: 'Error', message: 'Please fill in all fields.', type: 'error' });
+                navigate('/dashboard');
             }
-        }, 1500);
+        }
     };
 
     return (

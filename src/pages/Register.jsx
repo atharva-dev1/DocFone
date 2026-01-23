@@ -7,6 +7,7 @@ import { Button } from '../components/ui/Button';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { PasswordStrengthMeter } from '../components/auth/PasswordStrengthMeter';
 import { useToast } from '../context/ToastContext';
+import { useAuth } from '../context/AuthContext';
 
 const StepIndicator = ({ currentStep, totalSteps }) => (
     <div className="flex justify-center gap-2 mb-8">
@@ -14,7 +15,7 @@ const StepIndicator = ({ currentStep, totalSteps }) => (
             <div
                 key={idx}
                 className={`h-2 rounded-full transition-all duration-300 ${idx + 1 === currentStep ? 'w-8 bg-primary-500' :
-                        idx + 1 < currentStep ? 'w-2 bg-primary-200' : 'w-2 bg-slate-200'
+                    idx + 1 < currentStep ? 'w-2 bg-primary-200' : 'w-2 bg-slate-200'
                     }`}
             />
         ))}
@@ -25,7 +26,7 @@ export const Register = () => {
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const { addToast } = useToast();
+
 
     const [formData, setFormData] = useState({
         firstName: '', lastName: '', email: '', phone: '',
@@ -37,13 +38,16 @@ export const Register = () => {
     const nextStep = () => setStep(prev => prev + 1);
     const prevStep = () => setStep(prev => prev - 1);
 
+    const { register } = useAuth();
+
     const handleSubmit = async () => {
         setLoading(true);
-        // Simulate API
-        setTimeout(() => {
-            setLoading(false);
+        const success = await register(formData);
+
+        setLoading(false);
+        if (success) {
             setStep(4); // Success step
-        }, 2000);
+        }
     };
 
     const variants = {
@@ -134,8 +138,8 @@ export const Register = () => {
                                 <div
                                     onClick={() => setFormData({ ...formData, role: 'patient' })}
                                     className={`cursor-pointer p-6 rounded-2xl border-2 transition-all flex flex-col items-center gap-3 ${formData.role === 'patient'
-                                            ? 'border-primary-500 bg-primary-50 text-primary-700 shadow-lg shadow-primary-500/20'
-                                            : 'border-slate-200 hover:border-primary-200 hover:bg-slate-50 text-slate-500'
+                                        ? 'border-primary-500 bg-primary-50 text-primary-700 shadow-lg shadow-primary-500/20'
+                                        : 'border-slate-200 hover:border-primary-200 hover:bg-slate-50 text-slate-500'
                                         }`}
                                 >
                                     <HeartPulse size={40} className={formData.role === 'patient' ? "text-primary-500" : "text-slate-400"} />
@@ -144,8 +148,8 @@ export const Register = () => {
                                 <div
                                     onClick={() => setFormData({ ...formData, role: 'doctor' })}
                                     className={`cursor-pointer p-6 rounded-2xl border-2 transition-all flex flex-col items-center gap-3 ${formData.role === 'doctor'
-                                            ? 'border-secondary-500 bg-secondary-50 text-secondary-700 shadow-lg shadow-secondary-500/20'
-                                            : 'border-slate-200 hover:border-secondary-200 hover:bg-slate-50 text-slate-500'
+                                        ? 'border-secondary-500 bg-secondary-50 text-secondary-700 shadow-lg shadow-secondary-500/20'
+                                        : 'border-slate-200 hover:border-secondary-200 hover:bg-slate-50 text-slate-500'
                                         }`}
                                 >
                                     <Stethoscope size={40} className={formData.role === 'doctor' ? "text-secondary-500" : "text-slate-400"} />
