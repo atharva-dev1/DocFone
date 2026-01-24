@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Activity, User, Calendar, MessageSquare, Menu, X } from 'lucide-react';
+import { Activity, User, Calendar, MessageSquare, Menu, X, Crown } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../ui/Button';
 import { useAuth } from '../../context/AuthContext';
@@ -58,6 +58,11 @@ export const Navbar = () => {
                 <div className="hidden md:flex items-center gap-4">
                     {user ? (
                         <>
+                            <Link to="/premium">
+                                <Button variant="outline" size="sm" className="border-yellow-500 text-yellow-600 hover:bg-yellow-50">
+                                    <Crown size={14} className="mr-1" /> Upgrade
+                                </Button>
+                            </Link>
                             <div className="flex items-center gap-2">
                                 <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-sm">
                                     {user.firstName ? user.firstName[0] : 'U'}

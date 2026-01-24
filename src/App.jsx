@@ -20,6 +20,8 @@ import { ForgotPassword } from './pages/ForgotPassword';
 import { ResetPassword } from './pages/ResetPassword';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { VideoConsultation } from './pages/VideoConsultation';
+import { PremiumLanding } from './pages/PremiumLanding';
+import { Checkout } from './pages/Checkout';
 // Scroll to top wrapper
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -51,6 +53,8 @@ function App() {
                 <Route path="/prescription" element={<Prescription />} />
                 <Route path="/chat" element={<Chat />} />
                 <Route path="/video-consultation/:appointmentId" element={<VideoConsultation />} />
+                <Route path="/premium" element={<PremiumLanding />} />
+                <Route path="/checkout/:planId" element={<Checkout />} />
               </Routes>
             </Layout>
           </div>

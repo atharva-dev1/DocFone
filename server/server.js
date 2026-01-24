@@ -45,6 +45,7 @@ app.use('/api/prescriptions', require('./src/routes/prescriptionRoutes'));
 app.use('/api/chat', require('./src/routes/chatRoutes'));
 app.use('/api/admin', require('./src/routes/adminRoutes'));
 app.use('/api/doctor-actions', require('./src/routes/doctorActionRoutes'));
+app.use('/api/subscription', require('./src/routes/subscriptionRoutes'));
 
 // Socket.io connection
 io.on('connection', (socket) => {
