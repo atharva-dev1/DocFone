@@ -16,6 +16,7 @@ import { Booking } from './pages/Booking';
 import { Prescription } from './pages/Prescription';
 import { Chat } from './pages/Chat';
 
+import { AdminDashboard } from './pages/AdminDashboard';
 // Scroll to top wrapper
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -37,8 +38,11 @@ function App() {
                 <Route path="/" element={<Landing />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
+                <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 <Route path="/doctors" element={<FindDoctor />} />
                 <Route path="/book-appointment" element={<Booking />} />
                 <Route path="/prescription" element={<Prescription />} />

@@ -40,7 +40,9 @@ export const Register = () => {
 
     const { register } = useAuth();
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        if (e) e.preventDefault();
+        if (loading) return; // Prevent double submission
         setLoading(true);
 
         // Prepare data for API

@@ -43,6 +43,7 @@ app.use('/api/doctors', require('./src/routes/doctorRoutes'));
 app.use('/api/appointments', require('./src/routes/appointmentRoutes'));
 app.use('/api/prescriptions', require('./src/routes/prescriptionRoutes'));
 app.use('/api/chat', require('./src/routes/chatRoutes'));
+app.use('/api/admin', require('./src/routes/adminRoutes'));
 
 // Socket.io connection
 io.on('connection', (socket) => {
