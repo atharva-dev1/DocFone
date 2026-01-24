@@ -80,7 +80,13 @@ const updateDoctorProfile = asyncHandler(async (req, res) => {
             doctorProfile.location = req.body.location; // Expecting { type: 'Point', coordinates: [lng, lat] }
         }
 
-        // Update more fields as needed...
+        if (req.body.availability) {
+            doctorProfile.availability = req.body.availability;
+        }
+
+        if (req.body.clinicAddress) {
+            doctorProfile.clinicAddress = req.body.clinicAddress;
+        }
 
         const updatedProfile = await doctorProfile.save();
         res.json(updatedProfile);
@@ -90,8 +96,24 @@ const updateDoctorProfile = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc    Get current logged in doctor's profile
+// @route   GET /api/doctors/profile/me
+// @access  Private (Doctor)
+const getMyProfile = asyncHandler(async (req, res) => {
+    const doctorProfile = await DoctorProfile.findOne({ user: req.user._id })
+        .populate('user', 'firstName lastName email profileImage phone');
+
+    if (doctorProfile) {
+        res.json(doctorProfile);
+    } else {
+        res.status(404);
+        throw new Error('Profile not found');
+    }
+});
+
 module.exports = {
     getDoctors,
     getDoctorById,
-    updateDoctorProfile
+    updateDoctorProfile,
+    getMyProfile
 };

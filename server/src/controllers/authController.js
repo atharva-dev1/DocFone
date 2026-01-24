@@ -17,6 +17,7 @@ const generateToken = (id) => {
 // @access  Public
 const registerUser = async (req, res) => {
     try {
+        console.log("Register Request Body:", req.body);
         const { error } = registerSchema.validate(req.body);
         if (error) {
             return res.status(400).json({ message: error.details[0].message });

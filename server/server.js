@@ -44,8 +44,15 @@ app.use('/api/appointments', require('./src/routes/appointmentRoutes'));
 app.use('/api/prescriptions', require('./src/routes/prescriptionRoutes'));
 app.use('/api/chat', require('./src/routes/chatRoutes'));
 app.use('/api/admin', require('./src/routes/adminRoutes'));
+app.use('/api/doctor-actions', require('./src/routes/doctorActionRoutes'));
 
 // Socket.io connection
+io.on('connection', (socket) => {
+    // ... existing chat logic ...
+});
+
+// Initialize Video Call Socket
+require('./src/sockets/videoCallSocket')(io);
 io.on('connection', (socket) => {
     console.log(`User connected: ${socket.id}`);
 

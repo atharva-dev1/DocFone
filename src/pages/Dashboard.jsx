@@ -4,10 +4,8 @@ import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { SummaryCard } from '../components/dashboard/SummaryCard';
 import { Timeline } from '../components/dashboard/Timeline';
-import { Link } from 'react-router-dom';
-
+import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Navigate } from 'react-router-dom';
 
 export const Dashboard = () => {
     const { user, loading } = useAuth();
@@ -17,8 +15,8 @@ export const Dashboard = () => {
     if (loading) return <div className="p-10 text-center">Loading...</div>;
     if (!user) return <Navigate to="/login" />;
 
-    const initials = user.firstName ? `${user.firstName[0]}${user.lastName ? user.lastName[0] : ''}` : 'U';
-    const fullName = user.firstName ? `${user.firstName} ${user.lastName ? user.lastName : ''}` : 'User';
+    const initials = user?.firstName ? `${user.firstName[0]}${user.lastName ? user.lastName[0] : ''}` : 'U';
+    const fullName = user?.firstName ? `${user.firstName} ${user.lastName ? user.lastName : ''}` : 'User';
 
     const timelineEvents = [
         {

@@ -93,7 +93,11 @@ export const Register = () => {
                             <Input id="phone" label="Phone Number" type="tel" icon={Phone} value={formData.phone} onChange={handleChange} />
 
                             <div className="flex justify-end pt-4">
-                                <Button onClick={nextStep} className="w-full sm:w-auto">
+                                <Button
+                                    onClick={nextStep}
+                                    className="w-full sm:w-auto"
+                                    disabled={!formData.firstName || !formData.lastName || !formData.email || !formData.phone}
+                                >
                                     Next Step <ArrowRight size={18} />
                                 </Button>
                             </div>

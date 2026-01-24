@@ -16,7 +16,10 @@ import { Booking } from './pages/Booking';
 import { Prescription } from './pages/Prescription';
 import { Chat } from './pages/Chat';
 
+import { ForgotPassword } from './pages/ForgotPassword';
+import { ResetPassword } from './pages/ResetPassword';
 import { AdminDashboard } from './pages/AdminDashboard';
+import { VideoConsultation } from './pages/VideoConsultation';
 // Scroll to top wrapper
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -47,6 +50,7 @@ function App() {
                 <Route path="/book-appointment" element={<Booking />} />
                 <Route path="/prescription" element={<Prescription />} />
                 <Route path="/chat" element={<Chat />} />
+                <Route path="/video-consultation/:appointmentId" element={<VideoConsultation />} />
               </Routes>
             </Layout>
           </div>

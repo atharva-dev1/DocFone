@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Users, Calendar, Clock, CheckCircle, XCircle, MoreVertical, MessageSquare } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { SummaryCard } from '../components/dashboard/SummaryCard';
 
-const AppointmentRequest = ({ name, time, type, img, delay }) => (
+import { DoctorAppointmentActions } from '../components/dashboard/DoctorAppointmentActions';
+import { Link } from 'react-router-dom';
+import { Video } from 'lucide-react';
+
+const AppointmentRequest = ({ id, name, time, type, status, delay, onAction }) => (
     <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -22,13 +27,19 @@ const AppointmentRequest = ({ name, time, type, img, delay }) => (
                 </div>
             </div>
         </div>
-        <div className="flex gap-2">
-            <button className="p-2 text-green-600 hover:bg-green-50 rounded-full transition-colors">
-                <CheckCircle size={24} />
-            </button>
-            <button className="p-2 text-red-500 hover:bg-red-50 rounded-full transition-colors">
-                <XCircle size={24} />
-            </button>
+        <div className="flex items-center gap-2">
+            {status === 'confirmed' && (
+                <Link to={`/video-consultation/${id}`}>
+                    <Button size="sm" className="h-8 w-8 p-0 rounded-full" title="Join Video Call">
+                        <Video size={14} />
+                    </Button>
+                </Link>
+            )}
+            <DoctorAppointmentActions
+                appointmentId={id || 'mock-id'}
+                currentStatus={status || 'pending'}
+                onUpdate={onAction}
+            />
         </div>
     </motion.div>
 );
@@ -54,15 +65,74 @@ const ScheduleItem = ({ time, patient, type }) => (
     </div>
 );
 
+import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import { Navigate } from 'react-router-dom';
 
 export const DoctorDashboard = () => {
     const { user, loading } = useAuth();
+    const [appointments, setAppointments] = useState([]);
     const [isAvailable, setIsAvailable] = useState(true);
+    const [stats, setStats] = useState({
+        patients: 0,
+        appointments: 0,
+        pending: 0,
+        rating: 0
+    });
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            if (user?.role === 'doctor') {
+                try {
+                    const { data } = await axios.get('/api/doctors/profile/me');
+                    setIsAvailable(data.isAvailable ?? true);
+                    setStats({
+                        patients: 120, // Mock for now
+                        appointments: 5,
+                        pending: 0,
+                        rating: data.rating || 0
+                    });
+                } catch (error) {
+                    console.error("Failed to fetch doctor profile", error);
+                }
+            }
+        };
+
+        const fetchAppointments = async () => {
+            try {
+                const { data } = await axios.get('/api/appointments');
+                setAppointments(data);
+
+                // Update pending count based on real data
+                const pendingCount = data.filter(a => a.status === 'pending').length;
+                setStats(prev => ({ ...prev, pending: pendingCount }));
+            } catch (error) {
+                console.error("Failed to fetch appointments", error);
+            }
+        };
+
+        if (user?.role === 'doctor') {
+            fetchProfile();
+            fetchAppointments();
+        }
+    }, [user]);
+
+    const handleActionComplete = () => {
+        // Refresh appointments after an action
+        const fetchAppointments = async () => {
+            const { data } = await axios.get('/api/appointments');
+            setAppointments(data);
+        };
+        fetchAppointments();
+    };
 
     if (loading) return <div className="p-10 text-center">Loading...</div>;
     if (!user) return <Navigate to="/login" />;
+
+    const todayAppointments = appointments.filter(a =>
+        ['confirmed', 'completed'].includes(a.status)
+    );
+
+    const pendingAppointments = appointments.filter(a => a.status === 'pending');
 
     return (
         <div className="max-w-7xl mx-auto px-4 md:px-6 pb-12">
@@ -89,8 +159,8 @@ export const DoctorDashboard = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <SummaryCard title="Total Patients" value="1,240" subtext="+12% this month" icon={Users} color="blue" />
-                <SummaryCard title="Appointments" value="8" subtext="Today's schedule" icon={Calendar} color="purple" delay={0.1} />
-                <SummaryCard title="Pending" value="3" subtext="Requires approval" icon={Clock} color="orange" delay={0.2} />
+                <SummaryCard title="Appointments" value={todayAppointments.length} subtext="Today's schedule" icon={Calendar} color="purple" delay={0.1} />
+                <SummaryCard title="Pending" value={pendingAppointments.length} subtext="Requires approval" icon={Clock} color="orange" delay={0.2} />
                 <SummaryCard title="Overall Rating" value="4.9" subtext="Top rated doctor" icon={CheckCircle} color="green" delay={0.3} />
             </div>
 
@@ -103,11 +173,19 @@ export const DoctorDashboard = () => {
                     </div>
 
                     <Card className="p-6">
-                        <div className="mt-2">
-                            <ScheduleItem time="09:00 AM" patient="Ravi Kumar" type="Check-up" />
-                            <ScheduleItem time="10:30 AM" patient="Sneha Gupta" type="Consultation" />
-                            <ScheduleItem time="02:00 PM" patient="Alex L." type="Follow-up" />
-                            <ScheduleItem time="04:15 PM" patient="Rahul Verma" type="Report Review" />
+                        <div className="mt-2 text-slate-500">
+                            {todayAppointments.length === 0 ? (
+                                <p>No confirmed appointments for today.</p>
+                            ) : (
+                                todayAppointments.map(app => (
+                                    <ScheduleItem
+                                        key={app._id}
+                                        time={app.slot?.startTime || "TBD"}
+                                        patient={`${app.patient?.firstName} ${app.patient?.lastName}`}
+                                        type={app.type}
+                                    />
+                                ))
+                            )}
                         </div>
                     </Card>
                 </div>
@@ -116,13 +194,27 @@ export const DoctorDashboard = () => {
                 <div>
                     <div className="flex justify-between items-center mb-6">
                         <h3 className="text-xl font-bold text-slate-800">Requests</h3>
-                        <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-xs font-bold">3 New</span>
+                        <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-xs font-bold">{pendingAppointments.length} New</span>
                     </div>
 
                     <div className="space-y-4">
-                        <AppointmentRequest name="Priya Patel" time="Tomorrow, 10 AM" type="General Consult" delay={0.1} />
-                        <AppointmentRequest name="Amit Shah" time="25 Jan, 04 PM" type="Follow-up" delay={0.2} />
-                        <AppointmentRequest name="Neha Sharma" time="26 Jan, 09 AM" type="Check-up" delay={0.3} />
+                        {pendingAppointments.length === 0 ? (
+                            <p className="text-slate-500 text-sm">No pending requests.</p>
+                        ) : (
+                            pendingAppointments.map((app, idx) => (
+                                <AppointmentRequest
+                                    key={app._id}
+                                    id={app._id}
+                                    name={`${app.patient?.firstName} ${app.patient?.lastName}`}
+                                    time={new Date(app.date).toLocaleDateString()}
+                                    type={app.type}
+                                    status={app.status}
+                                    delay={0.1 * (idx + 1)}
+                                    // Pass callback to refresh list when approved/declined
+                                    onAction={handleActionComplete}
+                                />
+                            ))
+                        )}
                     </div>
                 </div>
             </div>
