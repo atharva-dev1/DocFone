@@ -1,9 +1,10 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Activity, User, Calendar, MessageSquare, Menu, X, Crown } from 'lucide-react';
+import { User, Calendar, MessageSquare, Menu, X, Crown } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../ui/Button';
 import { useAuth } from '../../context/AuthContext';
+import logo from '../../assets/logo.png';
 
 export const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -25,9 +26,11 @@ export const Navbar = () => {
         <header className="fixed top-0 left-0 right-0 z-50 px-4 py-4 md:px-6">
             <nav className="mx-auto max-w-7xl rounded-2xl bg-white/70 backdrop-blur-xl border border-white/20 shadow-lg px-6 py-3 flex items-center justify-between">
                 <Link to="/" className="flex items-center gap-2 group">
-                    <div className="bg-primary-500 rounded-lg p-2 text-white shadow-lg shadow-primary-500/30 group-hover:scale-110 transition-transform">
-                        <Activity size={24} />
-                    </div>
+                    <img
+                        src={logo}
+                        alt="DocFone Logo"
+                        className="w-10 h-10 rounded-lg group-hover:scale-110 transition-transform shadow-lg shadow-primary-500/20"
+                    />
                     <span className="text-xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
                         DocFone
                     </span>
