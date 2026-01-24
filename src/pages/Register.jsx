@@ -42,7 +42,17 @@ export const Register = () => {
 
     const handleSubmit = async () => {
         setLoading(true);
-        const success = await register(formData);
+
+        // Prepare data for API
+        // eslint-disable-next-line no-unused-vars
+        const { confirmPassword, ...apiData } = formData;
+
+        // Clean phone number (remove non-digits) to match validation pattern
+        if (apiData.phone) {
+            apiData.phone = apiData.phone.replace(/\D/g, '');
+        }
+
+        const success = await register(apiData);
 
         setLoading(false);
         if (success) {

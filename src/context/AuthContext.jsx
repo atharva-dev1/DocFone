@@ -51,6 +51,7 @@ export const AuthProvider = ({ children }) => {
             addToast({ title: 'Welcome back!', message: `Signed in as ${data.firstName}`, type: 'success' });
             return data;
         } catch (error) {
+            console.error("Login Error:", error.response?.data || error.message);
             const message = error.response?.data?.message || 'Login failed';
             addToast({ title: 'Error', message, type: 'error' });
             return null;
@@ -70,6 +71,7 @@ export const AuthProvider = ({ children }) => {
             addToast({ title: 'Welcome!', message: 'Account created successfully', type: 'success' });
             return data;
         } catch (error) {
+            console.error("Register Error:", error.response?.data || error.message);
             const message = error.response?.data?.message || 'Registration failed';
             addToast({ title: 'Error', message, type: 'error' });
             return null;
