@@ -20,6 +20,8 @@ export const AuthProvider = ({ children }) => {
 
             if (token) {
                 try {
+                    // Set base URL for production
+                    axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
                     // Set default headers for future requests
                     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 

@@ -16,17 +16,24 @@ connectDB();
 
 const app = express();
 const server = http.createServer(app);
+
+const corsOptions = {
+    origin: [process.env.CLIENT_URL, "http://localhost:5173", "http://localhost:5001"],
+    credentials: true
+};
+
 const io = new Server(server, {
     cors: {
-        origin: "*", // Allow all origins for dev, restrict in prod
-        methods: ["GET", "POST"]
+        origin: [process.env.CLIENT_URL, "http://localhost:5173"],
+        methods: ["GET", "POST"],
+        credentials: true
     }
 });
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(helmet());
 app.use(morgan('dev'));
 
